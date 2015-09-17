@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        var xmlhttp;
+        var data;
+        function loadXMLDoc(url,data,cfunc)
+        {
+            if (window.XMLHttpRequest)
+        {// code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp=new XMLHttpRequest();
+        }
+            else
+        {// code for IE6, IE5
+            xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+        }
+
+            xmlhttp.onreadystatechange=cfunc;
+            xmlhttp.open("POST",url,true);
+            xmlhttp.setRequestHeader("access-key","demo");
+            xmlhttp.setRequestHeader("Content-Type","application/json");
+            xmlhttp.send(JSON.stringify({"data":data}));
+        }
+        function addproduct()
+        {
+            var pname = document.getElementById("pname").value;
+            var sku = document.getElementById("sku").value;
+            var data = {"name":pname,"brand":"brand","collections":["most-popular"],"price":"500","sku":sku,publish:'1'};
+            loadXMLDoc("http://akshay-demo.storehippo.com/entity/ms.products",data,function()
+            {
+                if (xmlhttp.readyState==4 && xmlhttp.status==200)
+                {
+                    document.getElementById("myDiv").innerHTML="Product added with" + xmlhttp.responseText;
+                }
+            });
+        }
+
+        function addvariant()
+        {
+            var vname = document.getElementById("vname").value;
+
+            var data = {"name":  vname, "conditions": "", "action":{"theme":"557199823bbf756c12447c86", "language": "EN","currency":"INR"}};
+            loadXMLDoc("http://akshay-demo.storehippo.com/entity/ms.store_variants",data,function()
+            {
+                if (xmlhttp.readyState==4 && xmlhttp.status==200)
+                {
+                    document.getElementById("myDiv2").innerHTML= "Variant added with " + xmlhttp.responseText;
+                }
+            });
+        }
+
+       /* function deleteproduct()
+        {
+            var id = document.getElementById("_id").value;
+            var data = {"_id":id};
+            loadXMLDoc("http://akshay-demo.storehippo.com/entity/ms.products/"+data._id,data,function()
+            {
+                if (xmlhttp.readyState==4 && xmlhttp.status==200)
+                {
+                    document.getElementById("myDiv3").innerHTML="Product deleted with id" + xmlhttp.responseText;
+                }
+            });
+        }*/
+
+        function addtax()
+        {
+            var tax = document.getElementById("_tax").value;
+            var data = {"name":tax,"type":"sales-tax-india"};
+            loadXMLDoc("http://akshay-demo.storehippo.com/entity/ms.taxes_new",data,function()
+            {
+                if (xmlhttp.readyState==4 && xmlhttp.status==200)
+                {
+                    document.getElementById("myDiv4").innerHTML= "Tax added with" + xmlhttp.responseText;
+                }
+            });
+        }
+    </script>
+
+</head>
+<body>
+
+Name of the product: <input type="text" id="pname" value=""> &nbsp; &nbsp; &nbsp; &nbsp;
+Product sku : <input type="text" id="sku" value=""> <br> <br>
+<button type="button" onclick="addproduct()">Add Product</button> <br> <br>
+<div id="myDiv"><h2></h2></div><br><br>
+Name of the Variant: <input type="text" id="vname" value="">
+<button type="button" onclick="addvariant()">Add Store Variant</button> <br>
+<div id="myDiv2"><h2></h2></div><br><br>
+<!--ID of the product: <input type="text" id="_id" value=""> <br> <br>
+<button type="button" onclick="deleteproduct()">Delete Product</button> <br>
+<div id="myDiv3"><h2></h2><br><br></div>-->
+Tax Name: <input type="text" id="_tax" value=""> <br> <br>
+<button type="button" onclick="addtax()">Add Tax</button>  <br>
+<div id="myDiv4"><h2></h2></div><br><br>
+
+</body>
+</html>
+
+
